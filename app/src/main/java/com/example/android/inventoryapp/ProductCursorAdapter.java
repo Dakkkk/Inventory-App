@@ -2,11 +2,16 @@ package com.example.android.inventoryapp;
 
 import android.content.Context;
 import android.database.Cursor;
+import android.graphics.Bitmap;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import com.example.android.inventoryapp.data.ProductContract;
 
 /**
  * Created by Dawid on 2017-05-17.
@@ -136,7 +141,10 @@ public class ProductCursorAdapter extends CursorRecyclerAdapter<ProductCursorAda
 
     @Override
     public ProductCursorAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        return null;
+        View itemView = LayoutInflater.from(parent.getContext())
+                .inflate(R.layout.list_item, parent, false);
+        ViewHolder vh = new ViewHolder(itemView);
+        return vh;
     }
 
     @Override
@@ -147,7 +155,70 @@ public class ProductCursorAdapter extends CursorRecyclerAdapter<ProductCursorAda
     @Override
     public void onBindViewHolder(ProductCursorAdapter.ViewHolder viewHolder, Cursor cursor) {
 
-    }
+        // Find the columns of product attributes that we're interested in
+        int nameColumnIndex = cursor.getColumnIndex(ProductContract.ProductEntry.COLUMN_PRODUCT_NAME);
+        int priceColumnIndex = cursor.getColumnIndex(ProductContract.ProductEntry.COLUMN_PRODUCT_PRICE);
+        int quantityColumnIndex = cursor.getColumnIndex(ProductContract.ProductEntry.COLUMN_PRODUCT_QUANTITY);
+        int saleColumnIndex = cursor.getColumnIndex(ProductContract.ProductEntry.COLUMN_PRODUCT_SALE);
+        int imageColumnIndex = cursor.getColumnIndex(ProductContract.ProductEntry.COLUMN_PRODUCT_PICTURE);
+
+        // Read the product attributes from the Cursor for the current product
+        String productName = cursor.getString(nameColumnIndex);
+        String productPrice = cursor.getString(priceColumnIndex);
+
+        String productQuantity = cursor.getString(quantityColumnIndex);
+
+        String productSale = cursor.getString(saleColumnIndex);
+
+        byte[] listProductImage = cursor.getBlob(imageColumnIndex);
+
+        if (listProductImage != null) {
+            Bitmap imageItemBitmapResource = editorActivity.convertByteArrToBitmap(listProductImage);
+            viewHolder.productImage.setImageBitmap(imageItemBitmapResource);
+            //productMainImageView.setImageBitmap(imageItemBitmapResource);
+        } else {
+            Log.d("Adapter: ", "NULL image in DB");
+            //productMainImageView.setImageResource(R.drawable.question_mark);
+            viewHolder.productImage.setImageResource(R.drawable.question_mark);
+        }
+
+        String currentProductQuantity =
+                Integer.toString(Integer.parseInt(productQuantity) - Integer.parseInt(productSale));
+
+        // Update the TextViews with the attributes for the current product
+        StringBuilder sbName = new StringBuilder();
+        sbName.append(productName);
+
+        StringBuilder sbQuantity = new StringBuilder();
+        sbQuantity.append("Current quantity: ");
+        sbQuantity.append(currentProductQuantity);
+        sbQuantity.append(" ");
+        sbQuantity.append(activity.getResources().getString(R.string.unit_product_quantity));
+
+        StringBuilder sbPrice = new StringBuilder();
+        sbPrice.append("Price: ");
+        sbPrice.append(productPrice);
+        sbPrice.append(" ");
+        sbPrice.append(activity.getResources().getString(R.string.unit_product_price));
+
+        StringBuilder sbSale = new StringBuilder();
+        sbSale.append("Sale: ");
+        sbSale.append(productSale);
+
+        viewHolder.nameTextView.setText(sbName);
+        viewHolder.quantityTextView.setText(sbQuantity);
+        viewHolder.priceTextView.setText(sbPrice);
+        viewHolder.saleTextView.setText(sbSale);
+        viewHolder.nameTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+
+
+
+        }
 
     @Override
     public Cursor getCursor() {
