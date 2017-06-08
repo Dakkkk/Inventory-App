@@ -81,6 +81,7 @@ public class ProductCursorAdapter extends CursorRecyclerAdapter<ProductCursorAda
 
     @Override
     public ProductCursorAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        mContext = parent.getContext();
         View itemView = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.list_item, parent, false);
         ViewHolder vh = new ViewHolder(itemView);
@@ -93,6 +94,7 @@ public class ProductCursorAdapter extends CursorRecyclerAdapter<ProductCursorAda
 
         final long id;
         final int mQuantity;
+
 
         // Find the columns of product attributes that we're interested in
         id = cursor.getLong(cursor.getColumnIndex(ProductContract.ProductEntry._ID));
@@ -160,7 +162,7 @@ public class ProductCursorAdapter extends CursorRecyclerAdapter<ProductCursorAda
         viewHolder.saleOneBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                activity.saleOneItem(getCursor(), activity, id);
+                activity.saleOneItem(getCursor(), mContext, id);
             }
         });
 
