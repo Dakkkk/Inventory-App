@@ -14,11 +14,11 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ListView;
 import android.widget.Toast;
 
 import com.example.android.inventoryapp.data.ProductContract.ProductEntry;
@@ -33,10 +33,13 @@ public class ProductsActivity extends AppCompatActivity implements
      */
     private static final int PRODUCT_LOADER = 0;
 
+    ProductCursorAdapter mCursorAdapter;
+    private RecyclerView mRecyclerView;
+    private RecyclerView.LayoutManager mLayoutManager;
+
     /**
      * Adapter for the ListView
      */
-    ProductCursorAdapter mCursorAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,39 +56,46 @@ public class ProductsActivity extends AppCompatActivity implements
             }
         });
 
+        mRecyclerView = (RecyclerView) findViewById(R.id.list_view);
+        mLayoutManager = new LinearLayoutManager(ProductsActivity.this);
+        mRecyclerView.setLayoutManager(mLayoutManager);
+
         // Find the ListView which will be populated with the product data
-        ListView productListView = (ListView) findViewById(R.id.list);
+//        ListView productListView = (ListView) findViewById(R.id.list);
 
         // Find and set empty view on the ListView, so that it only shows when the list has 0 items.
         View emptyView = findViewById(R.id.empty_view);
-        productListView.setEmptyView(emptyView);
+
+//        productListView.setEmptyView(emptyView);
 
         // Setup an Adapter to create a list item for each row of product data in the Cursor.
         // There is no product data yet (until the loader finishes) so pass in null for the Cursor.
         mCursorAdapter = new ProductCursorAdapter(this, null);
-        productListView.setAdapter(mCursorAdapter);
+//        productListView.setAdapter(mCursorAdapter);
+        mRecyclerView.setAdapter(mCursorAdapter);
+
 
         // Setup the item click listener
-        productListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
-                // Create new intent to go to {@link EditorActivity}
-                Intent intent = new Intent(ProductsActivity.this, EditorActivity.class);
-
-                // Form the content URI that represents the specific product that was clicked on,
-                // by appending the "id" (passed as input to this method) onto the
-                // {@link ProductEntry#CONTENT_URI}.
-                // For example, the URI would be "content://com.example.android.products/products/2"
-                // if the product with ID 2 was clicked on.
-                Uri currentProductUri = ContentUris.withAppendedId(ProductEntry.CONTENT_URI, id);
-
-                // Set the URI on the data field of the intent
-                intent.setData(currentProductUri);
-
-                // Launch the {@link EditorActivity} to display the data for the current product.
-                startActivity(intent);
-            }
-        });
+//        productListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//            @Override
+//            public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
+//                // Create new intent to go to {@link EditorActivity}
+//                Intent intent = new Intent(ProductsActivity.this, EditorActivity.class);
+//
+//                // Form the content URI that represents the specific product that was clicked on,
+//                // by appending the "id" (passed as input to this method) onto the
+//                // {@link ProductEntry#CONTENT_URI}.
+//                // For example, the URI would be "content://com.example.android.products/products/2"
+//                // if the product with ID 2 was clicked on.
+//                Uri currentProductUri = ContentUris.withAppendedId(ProductEntry.CONTENT_URI, id);
+//
+//                // Set the URI on the data field of the intent
+//                intent.setData(currentProductUri);
+//
+//                // Launch the {@link EditorActivity} to display the data for the current product.
+//                startActivity(intent);
+//            }
+//        });
 
         // Kick off the loader
         getLoaderManager().initLoader(PRODUCT_LOADER, null, this);
