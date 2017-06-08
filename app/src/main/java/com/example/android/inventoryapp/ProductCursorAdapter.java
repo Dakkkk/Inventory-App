@@ -213,7 +213,8 @@ public class ProductCursorAdapter extends CursorRecyclerAdapter<ProductCursorAda
         viewHolder.quantityTextView.setText(sbQuantity);
         viewHolder.priceTextView.setText(sbPrice);
         viewHolder.saleTextView.setText(sbSale);
-        viewHolder.nameTextView.setOnClickListener(new View.OnClickListener() {
+
+        viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 activity.onItemClick(id);
