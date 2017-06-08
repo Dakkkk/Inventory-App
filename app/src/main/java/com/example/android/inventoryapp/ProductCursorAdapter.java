@@ -155,7 +155,11 @@ public class ProductCursorAdapter extends CursorRecyclerAdapter<ProductCursorAda
     @Override
     public void onBindViewHolder(ProductCursorAdapter.ViewHolder viewHolder, Cursor cursor) {
 
+        final long id;
+        final int mQuantity;
+
         // Find the columns of product attributes that we're interested in
+        id = cursor.getLong(cursor.getColumnIndex(ProductContract.ProductEntry._ID));
         int nameColumnIndex = cursor.getColumnIndex(ProductContract.ProductEntry.COLUMN_PRODUCT_NAME);
         int priceColumnIndex = cursor.getColumnIndex(ProductContract.ProductEntry.COLUMN_PRODUCT_PRICE);
         int quantityColumnIndex = cursor.getColumnIndex(ProductContract.ProductEntry.COLUMN_PRODUCT_QUANTITY);
@@ -212,13 +216,11 @@ public class ProductCursorAdapter extends CursorRecyclerAdapter<ProductCursorAda
         viewHolder.nameTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                activity.onItemClick(id);
             }
         });
 
-
-
-        }
+    }
 
     @Override
     public Cursor getCursor() {

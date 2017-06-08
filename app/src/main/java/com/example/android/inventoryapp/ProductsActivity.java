@@ -21,6 +21,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
+import com.example.android.inventoryapp.data.ProductContract;
 import com.example.android.inventoryapp.data.ProductContract.ProductEntry;
 
 import java.io.ByteArrayOutputStream;
@@ -225,5 +226,15 @@ public class ProductsActivity extends AppCompatActivity implements
     public void onLoaderReset(Loader<Cursor> loader) {
         // Callback called when the data needs to be deleted
         mCursorAdapter.swapCursor(null);
+    }
+
+    //Method to get to the EditorActivity when item clicked
+    public void onItemClick(long id) {
+        Intent intent = new Intent(ProductsActivity.this, EditorActivity.class);
+
+        Uri currentProductUri = ContentUris.withAppendedId(ProductContract.ProductEntry.CONTENT_URI, id);
+        intent.setData(currentProductUri);
+
+        startActivity(intent);
     }
 }
