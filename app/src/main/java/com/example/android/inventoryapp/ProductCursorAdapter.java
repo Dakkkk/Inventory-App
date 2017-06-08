@@ -29,34 +29,7 @@ public class ProductCursorAdapter extends CursorRecyclerAdapter<ProductCursorAda
     public ProductCursorAdapter(ProductsActivity context, Cursor c) {
         super(context, c);
         this.activity = context;
-
     }
-
-
-//    @Override
-//    public View newView(Context context, Cursor cursor, ViewGroup parent) {
-//        // Inflate a list item view using the layout specified in list_item.xml
-//        return LayoutInflater.from(context).inflate(R.layout.list_item, parent, false);
-//    }
-//
-//    @Override
-//    public View getView(final int position, View convertView, ViewGroup parent) {
-//
-//        View tmpView = super.getView(position, convertView, parent);
-//
-//        Button saleOneItemBtn = (Button) tmpView.findViewById(R.id.sale_1_item_btn);
-//
-//        saleOneItemBtn.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                ProductsActivity mainActivity = new ProductsActivity();
-//                mainActivity.saleOneItem(getCursor(), mContext, getItemId(position));
-//            }
-//        });
-//
-//        return tmpView;
-//    }
-
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
 
@@ -93,8 +66,6 @@ public class ProductCursorAdapter extends CursorRecyclerAdapter<ProductCursorAda
     public void onBindViewHolder(final ProductCursorAdapter.ViewHolder viewHolder, Cursor cursor) {
 
         final long id;
-        final int mQuantity;
-
 
         // Find the columns of product attributes that we're interested in
         id = cursor.getLong(cursor.getColumnIndex(ProductContract.ProductEntry._ID));
@@ -117,10 +88,8 @@ public class ProductCursorAdapter extends CursorRecyclerAdapter<ProductCursorAda
         if (listProductImage != null) {
             Bitmap imageItemBitmapResource = editorActivity.convertByteArrToBitmap(listProductImage);
             viewHolder.productImage.setImageBitmap(imageItemBitmapResource);
-            //productMainImageView.setImageBitmap(imageItemBitmapResource);
         } else {
             Log.d("Adapter: ", "NULL image in DB");
-            //productMainImageView.setImageResource(R.drawable.question_mark);
             viewHolder.productImage.setImageResource(R.drawable.question_mark);
         }
 

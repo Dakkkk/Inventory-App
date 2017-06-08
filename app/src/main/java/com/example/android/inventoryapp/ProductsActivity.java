@@ -62,42 +62,13 @@ public class ProductsActivity extends AppCompatActivity implements
         mLayoutManager = new LinearLayoutManager(ProductsActivity.this);
         mRecyclerView.setLayoutManager(mLayoutManager);
 
-        // Find the ListView which will be populated with the product data
-//        ListView productListView = (ListView) findViewById(R.id.list);
-
         // Find and set empty view on the ListView, so that it only shows when the list has 0 items.
-         emptyView = findViewById(R.id.empty_view);
-
-//        productListView.setEmptyView(emptyView);
+        emptyView = findViewById(R.id.empty_view);
 
         // Setup an Adapter to create a list item for each row of product data in the Cursor.
         // There is no product data yet (until the loader finishes) so pass in null for the Cursor.
         mCursorAdapter = new ProductCursorAdapter(this, null);
-//        productListView.setAdapter(mCursorAdapter);
         mRecyclerView.setAdapter(mCursorAdapter);
-
-
-        // Setup the item click listener
-//        productListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//            @Override
-//            public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
-//                // Create new intent to go to {@link EditorActivity}
-//                Intent intent = new Intent(ProductsActivity.this, EditorActivity.class);
-//
-//                // Form the content URI that represents the specific product that was clicked on,
-//                // by appending the "id" (passed as input to this method) onto the
-//                // {@link ProductEntry#CONTENT_URI}.
-//                // For example, the URI would be "content://com.example.android.products/products/2"
-//                // if the product with ID 2 was clicked on.
-//                Uri currentProductUri = ContentUris.withAppendedId(ProductEntry.CONTENT_URI, id);
-//
-//                // Set the URI on the data field of the intent
-//                intent.setData(currentProductUri);
-//
-//                // Launch the {@link EditorActivity} to display the data for the current product.
-//                startActivity(intent);
-//            }
-//        });
 
         // Kick off the loader
         getLoaderManager().initLoader(PRODUCT_LOADER, null, this);
@@ -220,7 +191,7 @@ public class ProductsActivity extends AppCompatActivity implements
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
         // Update {@link ProductCursorAdapter} with this new cursor containing updated product data
-        if(!data.moveToFirst()) {
+        if (!data.moveToFirst()) {
             emptyView.setVisibility(View.VISIBLE);
         } else {
             emptyView.setVisibility(View.GONE);

@@ -52,7 +52,6 @@ public abstract class CursorRecyclerAdapter<VH extends RecyclerView.ViewHolder> 
         super.setHasStableIds(true);
     }
 
-
     public abstract void onBindViewHolder(VH viewHolder, Cursor cursor);
 
     @Override
@@ -65,16 +64,6 @@ public abstract class CursorRecyclerAdapter<VH extends RecyclerView.ViewHolder> 
         }
 
         onBindViewHolder(holder, cursor);
-
-
-
-    }
-
-    public void changeCursor(Cursor cursor) {
-        Cursor old = swapCursor(cursor);
-        if (old != null) {
-            old.close();
-        }
     }
 
     public Cursor swapCursor(Cursor newCursor) {
