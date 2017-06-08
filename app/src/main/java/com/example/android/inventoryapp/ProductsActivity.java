@@ -37,6 +37,7 @@ public class ProductsActivity extends AppCompatActivity implements
     ProductCursorAdapter mCursorAdapter;
     private RecyclerView mRecyclerView;
     private RecyclerView.LayoutManager mLayoutManager;
+    View emptyView;
 
     /**
      * Adapter for the ListView
@@ -65,7 +66,7 @@ public class ProductsActivity extends AppCompatActivity implements
 //        ListView productListView = (ListView) findViewById(R.id.list);
 
         // Find and set empty view on the ListView, so that it only shows when the list has 0 items.
-        View emptyView = findViewById(R.id.empty_view);
+         emptyView = findViewById(R.id.empty_view);
 
 //        productListView.setEmptyView(emptyView);
 
@@ -219,6 +220,11 @@ public class ProductsActivity extends AppCompatActivity implements
     @Override
     public void onLoadFinished(Loader<Cursor> loader, Cursor data) {
         // Update {@link ProductCursorAdapter} with this new cursor containing updated product data
+        if(!data.moveToFirst()) {
+            emptyView.setVisibility(View.VISIBLE);
+        } else {
+            emptyView.setVisibility(View.GONE);
+        }
         mCursorAdapter.swapCursor(data);
     }
 

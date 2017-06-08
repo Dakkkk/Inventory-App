@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -127,6 +128,8 @@ public class ProductCursorAdapter extends CursorRecyclerAdapter<ProductCursorAda
         protected TextView priceTextView;
         protected TextView quantityTextView;
         protected TextView saleTextView;
+        protected Button saleOneBtn;
+
         protected ImageView productImage;
 
         public ViewHolder(View itemView) {
@@ -136,6 +139,7 @@ public class ProductCursorAdapter extends CursorRecyclerAdapter<ProductCursorAda
             quantityTextView = (TextView) itemView.findViewById(R.id.products_quantity);
             saleTextView = (TextView) itemView.findViewById(R.id.products_sale);
             productImage = (ImageView) itemView.findViewById(R.id.product_main_img);
+            saleOneBtn = (Button) itemView.findViewById(R.id.sale_1_item_btn);
         }
     }
 
@@ -147,13 +151,9 @@ public class ProductCursorAdapter extends CursorRecyclerAdapter<ProductCursorAda
         return vh;
     }
 
-    @Override
-    public long getItemId(int position) {
-        return super.getItemId(position);
-    }
 
     @Override
-    public void onBindViewHolder(ProductCursorAdapter.ViewHolder viewHolder, Cursor cursor) {
+    public void onBindViewHolder(final ProductCursorAdapter.ViewHolder viewHolder, Cursor cursor) {
 
         final long id;
         final int mQuantity;
@@ -217,6 +217,15 @@ public class ProductCursorAdapter extends CursorRecyclerAdapter<ProductCursorAda
             @Override
             public void onClick(View v) {
                 activity.onItemClick(id);
+            }
+        });
+
+        viewHolder.saleOneBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int id_int = (int) id;
+                ProductsActivity mainActivity = new ProductsActivity();
+                mainActivity.saleOneItem(getCursor(), mContext, getItemId((int) viewHolder.getItemId()));
             }
         });
 
